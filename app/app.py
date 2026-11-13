@@ -10,8 +10,13 @@ Ejecutar en local desde la raíz del repo:   streamlit run app/app.py
 import sys
 from pathlib import Path
 
-# Permite importar el paquete `src` sin importar desde dónde se lance la app.
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# Permite importar el paquete `src` sin importar desde dónde se lance la app:
+# sube por las carpetas hasta encontrar la que contiene src/modelos.py.
+_aqui = Path(__file__).resolve()
+for _p in _aqui.parents:
+    if (_p / "src" / "modelos.py").exists():
+        sys.path.insert(0, str(_p))
+        break
 
 import numpy as np
 import pandas as pd
