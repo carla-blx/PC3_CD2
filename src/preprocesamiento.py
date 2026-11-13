@@ -59,7 +59,7 @@ def limpiar_texto(texto) -> str:
 # 2. spaCy: TOKENIZACIÓN + LEMATIZACIÓN
 # ---------------------------------------------------------------------------
 def cargar_spacy(con_ner: bool = False):
-    """Carga es_core_news_sm; si no está instalado, lo descarga (útil en Streamlit Cloud).
+    """Carga es_core_news_sm; si no está instalado intenta descargarlo.
 
     Se desactivan `parser` (y `ner` salvo que se pida) porque no los necesitamos
     para lematizar y así el procesamiento es bastante más rápido.
@@ -70,9 +70,17 @@ def cargar_spacy(con_ner: bool = False):
     try:
         return spacy.load(NOMBRE_MODELO_SPACY, disable=desactivar)
     except OSError:
+        pass
+    # Respaldo para entornos con permisos (local/Colab). En Streamlit Cloud NO funciona:
+    # allí el modelo debe estar en requirements.txt.
+    try:
         from spacy.cli import download
         download(NOMBRE_MODELO_SPACY)
         return spacy.load(NOMBRE_MODELO_SPACY, disable=desactivar)
+    except (SystemExit, Exception) as e:
+        raise RuntimeError(
+            f"No se pudo cargar el modelo {NOMBRE_MODELO_SPACY}. Instálalo con "
+            f"'python -m spacy download {NOMBRE_MODELO_SPACY}' o agrégalo a requirements.txt.") from e
 
 
 # Negaciones: invierten el sentido ("no funciona", "sin agua"). spaCy las
