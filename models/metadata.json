@@ -1,0 +1,17 @@
+{
+  "sklearn_version": "1.8.0",
+  "k_temas": 5,
+  "etiquetas_temas": [
+    "Tema 1: habitación, agua, noche",
+    "Tema 2: volver, atención, excelente",
+    "Tema 3: agua, caliente, ayudar",
+    "Tema 4: excelente, atención, limpio",
+    "Tema 5: habitación, desayuno, servicio"
+  ],
+  "metricas_sentimiento_ligero": {
+    "accuracy": 0.8634538152610441,
+    "macro_f1": 0.6755944573039531,
+    "n_train": 1991,
+    "n_test": 498
+  }
+}
